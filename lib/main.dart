@@ -5,6 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'functions.dart';
 import 'package:flutter/rendering.dart';
 
+//If you're reading this, i uploaded to github!!!
+//Ok why isn't this working?
+
+function() {
+  return "Nothing"
+}
+
 //Global Values
 var prefs;
 final client = new Client();
