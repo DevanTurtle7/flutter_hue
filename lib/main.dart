@@ -5,8 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'functions.dart';
 import 'package:flutter/rendering.dart';
 
-//can u see this????
-
 //Global Values
 var prefs;
 final client = new Client();
