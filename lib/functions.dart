@@ -13,6 +13,7 @@ Future<List<DiscoveryResult>> findBridges() async {
 }
 
 Future<Bridge> connectToBridge(DiscoveryResult discoveryResult) async {
+  print('connect called');
   if (!connecting) {
     connecting = true;
 
@@ -36,6 +37,8 @@ Future<Bridge> connectToBridge(DiscoveryResult discoveryResult) async {
         } catch (e) {
           print('push link not pushed $count');
         }
+
+        count++;
       }
 
       //8muBKWrGPkp9yrLQkk-PdhkVlkBHPtCFM8zkP4mc
@@ -57,4 +60,31 @@ Future<Bridge> connectToBridge(DiscoveryResult discoveryResult) async {
 
 Future<void> updateLight(Bridge bridge, Light light) async {
   await bridge.updateLightState(light);
+}
+
+class SlideLeftRoute extends PageRouteBuilder {
+  final Widget page;
+
+  SlideLeftRoute({this.page})
+      : super(
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1, 0),
+                  end: Offset.zero,
+                ).chain(CurveTween(curve: Curves.easeOutCirc)).animate(animation),
+                child: child,
+              ),
+        );
 }

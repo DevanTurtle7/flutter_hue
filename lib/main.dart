@@ -11,8 +11,9 @@ final client = new Client();
 bool connecting = false;
 
 void main() async {
-  //debugPaintSizeEnabled = true;
+  WidgetsFlutterBinding.ensureInitialized();
   prefs = await SharedPreferences.getInstance();
+  //debugPaintSizeEnabled = true;
 
   runApp(MyApp());
 }
@@ -59,6 +60,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   double sliderVal = 20;
   int selectedIndex;
+  DiscoveryResult chosenBridge;
 
   void sliderChange(e) {
     setState(() {
@@ -124,7 +126,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               onTap: () {
                                 setState(() {
                                   selectedIndex = index;
+                                  chosenBridge = snapshot.data[index];
                                 });
+                                print(snapshot.data[index]);
                                 //connectToBridge(snapshot.data[index]);
                               },
                             );
@@ -156,7 +160,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   disabledTextColor: Colors.black26,
                   disabledColor: Colors.black12,
                   disabledElevation: 0,
-                  onPressed: selectedIndex == null ? null : () {},
+                  onPressed: selectedIndex == null
+                      ? null
+                      : () {
+                          Navigator.push(
+                              context,
+                              SlideLeftRoute(
+                                  page: ConnectingPage(
+                                bridge: chosenBridge,
+                              )));
+                        },
                   child: const Text('Next', style: TextStyle(fontSize: 16)),
                 ),
               ],
@@ -171,5 +184,52 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add),
       ),*/
     );
+  }
+}
+
+class ConnectingPage extends StatefulWidget {
+  final DiscoveryResult bridge;
+
+  const ConnectingPage({Key key, this.bridge}) : super(key: key);
+
+  @override
+  ConnectingPageState createState() => ConnectingPageState();
+}
+
+class ConnectingPageState extends State<ConnectingPage> {
+  @override
+  Widget build(BuildContext context) {
+    final DiscoveryResult bridge = widget.bridge;
+    connectToBridge(bridge);
+
+    return Scaffold(
+        body: Center(
+            child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Column(children: <Widget>[
+        Text('Connecting to Bridge',
+            textAlign: TextAlign.center,
+            style: new TextStyle(fontSize: 25, fontWeight: FontWeight.w600)),
+        Padding(
+            padding: EdgeInsets.only(left: 40, right: 40, top: 10),
+            child: Text('Press the pushlink button on your bridge to continue',
+                textAlign: TextAlign.center,
+                style:
+                    new TextStyle(fontSize: 20, fontWeight: FontWeight.w400))),]),
+        SizedBox(
+              width: MediaQuery.of(context).size.width * .5,
+              height: MediaQuery.of(context).size.width * .5,
+              child: CircularProgressIndicator(
+                strokeWidth: 10,
+              ),
+        ),
+        FlatButton(
+          onPressed: () {},
+          child: Text('Help', style: TextStyle(fontSize: 18, color: Colors.blue)),
+        )
+      ],
+    )));
   }
 }
