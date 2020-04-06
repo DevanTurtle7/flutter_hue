@@ -5,9 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../main.dart';
-import '../../functions.dart';
+import '../../globals/functions.dart';
 
 import 'page_Connecting.dart';
+import '../main/page_Home.dart';
 
 class BridgeSelectionPage extends StatefulWidget {
   BridgeSelectionPage({Key key}) : super(key: key);
@@ -49,7 +50,7 @@ class BridgeSelectionPageState extends State<BridgeSelectionPage> {
                   future: findBridges(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
-                      print('theres data');
+                      //print('theres data');
                       return new ListView.builder(
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {

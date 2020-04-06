@@ -4,10 +4,12 @@ import 'package:hue_dart/hue_dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/rendering.dart';
 
-import '../../functions.dart';
 import '../../main.dart';
+import '../../globals/functions.dart';
+import '../../globals/variables.dart' as g;
 
 import 'page_BridgeSelection.dart';
+import '../main/page_Home.dart';
 
 class ConnectingPage extends StatefulWidget {
   final DiscoveryResult bridge;
@@ -24,7 +26,15 @@ class ConnectingPageState extends State<ConnectingPage> {
     final DiscoveryResult bridge = widget.bridge;
     connectToBridge(bridge);
 
-    return Scaffold(
+    Future<bool> onPop() async {
+      g.connecting = false;
+      Navigator.of(context).pop(true);
+      return false;
+    }
+
+    return WillPopScope(
+      onWillPop: onPop ,
+      child:Scaffold(
         body: Center(
             child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,6 +62,6 @@ class ConnectingPageState extends State<ConnectingPage> {
           child: Text('Help', style: TextStyle(fontSize: 18, color: Colors.blue)),
         )
       ],
-    )));
+    ))));
   }
 }

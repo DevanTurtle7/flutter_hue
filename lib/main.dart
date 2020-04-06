@@ -4,19 +4,19 @@ import 'package:hue_dart/hue_dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/rendering.dart';
 
-import 'functions.dart';
+import 'globals/functions.dart';
+import 'globals/variables.dart' as g;
 
 import 'pages/setup/page_BridgeSelection.dart';
 import 'pages/setup/page_Connecting.dart';
+import 'pages/main/page_Home.dart';
 
 //Global Values
-var prefs;
-final client = new Client();
-bool connecting = false;
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  prefs = await SharedPreferences.getInstance();
+  g.prefs = await SharedPreferences.getInstance();
   //debugPaintSizeEnabled = true;
 
   runApp(MyApp());
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: BridgeSelectionPage(),
+      home: g.prefs.getInt('lastBridge') == null ? BridgeSelectionPage() : HomePage(),
     );
   }
 }
