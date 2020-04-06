@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:hue_dart/hue_dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'main.dart';
+
+import 'pages/setup/page_BridgeSelection.dart';
+import 'pages/setup/page_Connecting.dart';
 
 Future<List<DiscoveryResult>> findBridges() async {
   final discovery = new BridgeDiscovery(client);
