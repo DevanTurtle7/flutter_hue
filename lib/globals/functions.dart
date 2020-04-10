@@ -43,6 +43,7 @@ Future<Bridge> connectToBridge(DiscoveryResult discoveryResult) async {
               whiteListItem.username); //Save local value of bridge username
         } catch (e) {
           print('push link not pushed $count');
+          print(g.connecting);
         }
 
         count++;

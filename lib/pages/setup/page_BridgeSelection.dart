@@ -6,9 +6,9 @@ import 'package:flutter/rendering.dart';
 
 import '../../main.dart';
 import '../../globals/functions.dart';
-
-import 'page_Connecting.dart';
 import '../main/page_Home.dart';
+import 'page_Connecting.dart';
+import 'page_ManualConnection.dart';
 
 class BridgeSelectionPage extends StatefulWidget {
   BridgeSelectionPage({Key key}) : super(key: key);
@@ -107,7 +107,13 @@ class BridgeSelectionPageState extends State<BridgeSelectionPage> {
                 FlatButton(
                   textColor: Colors.blue,
                   padding: EdgeInsets.all(8.0),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                              context,
+                              SlideLeftRoute(
+                                  page: ManualConnection()
+                              ));
+                  },
                   child: Text(
                     "Manual",
                     style: TextStyle(fontSize: 16),
