@@ -34,8 +34,6 @@ class ConnectingPageState extends State<ConnectingPage> {
   Widget build(BuildContext context) {
     final DiscoveryResult bridge = widget.bridge;
 
-    
-
     Future<bool> onPop() async {
       g.connecting = false;
       print('turning off connection');

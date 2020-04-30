@@ -19,6 +19,9 @@ Future<List<DiscoveryResult>> findBridges() async {
 }
 
 Future<Bridge> connectToBridge(DiscoveryResult discoveryResult) async {
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
   print('connect called');
   if (!g.connecting) {
     g.connecting = true;
@@ -26,7 +29,7 @@ Future<Bridge> connectToBridge(DiscoveryResult discoveryResult) async {
     //create bridge
     Bridge bridge = new Bridge(g.client, discoveryResult.ipAddress);
 
-    if (g.prefs.getInt('bridge' + '${discoveryResult.id}') == null) {
+    if (prefs.getString('bridge' + '${discoveryResult.id}') == null) {
       //If there isn't a local value stored with bridge username...
       WhiteListItem whiteListItem;
       var pushLinkPushed = false;
@@ -39,11 +42,16 @@ Future<Bridge> connectToBridge(DiscoveryResult discoveryResult) async {
           whiteListItem = await bridge.createUser(
               'dart_hue#example'); //Will return error if pushLink hasnt been pressed
           print('bridge_' + '${discoveryResult.id}');
-          g.prefs.setInt('bridge' + '${discoveryResult.id}',
-              whiteListItem.username); //Save local value of bridge username
+          prefs.setString('bridge' + '${discoveryResult.id}',
+              whiteListItem.username.toString()); //Save local value of bridge username
+          
+          pushLinkPushed = true;
+          print('hellooooo');
+          print(pushLinkPushed);
         } catch (e) {
-          print('push link not pushed $count');
-          print(g.connecting);
+          print(count);
+          //print('push link not pushed $count');
+          //print(g.connecting);
         }
 
         count++;
@@ -58,12 +66,13 @@ Future<Bridge> connectToBridge(DiscoveryResult discoveryResult) async {
       }
       //bridge.username = 'F-vufqtHK-QWWECGb0hjdNMyP3pxLAx3dsva1J2C';
     } else {
-      bridge.username = g.prefs.getInt('bridge' +
+      print('bridge was already saved');
+      bridge.username = prefs.getString('bridge' +
           '${discoveryResult.ipAddress}'); //Set bridge username to local value that was previously set
     }
 
     if (g.connecting) {
-      g.prefs.setInt('lastBridge', discoveryResult.ipAddress);
+      prefs.setString('lastBridge', discoveryResult.ipAddress.toString());
 
       g.connecting = false;
       return bridge;

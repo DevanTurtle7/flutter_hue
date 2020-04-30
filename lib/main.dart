@@ -11,12 +11,11 @@ import 'pages/setup/page_BridgeSelection.dart';
 import 'pages/setup/page_Connecting.dart';
 import 'pages/main/page_Home.dart';
 
-//Global Values
-
+SharedPreferences prefs;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  g.prefs = await SharedPreferences.getInstance();
+  prefs = await SharedPreferences.getInstance();
   //debugPaintSizeEnabled = true;
 
   runApp(MyApp());
@@ -49,7 +48,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: g.prefs.getInt('lastBridge') == null ? BridgeSelectionPage() : HomePage(),
+      home: prefs.getString('lastBridge') == null ? BridgeSelectionPage() : HomePage(),
     );
   }
 }
